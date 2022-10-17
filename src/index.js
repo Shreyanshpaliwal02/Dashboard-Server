@@ -3,6 +3,8 @@ const mongoose = require("mongoose");
 const userModel = require("./models/user");
 const cors = require("cors");
 const app = express();
+const env = require("dotenv");
+env.config();
 
 app.use(cors());
 app.use(express.json());
@@ -27,8 +29,9 @@ app.post("/user", async (req, res) => {
   });
   res.send = "one small step for man, one giant leap for mankind!";
 });
-const url =
-  "mongodb+srv://admin:admin@cluster0.lgwpvop.mongodb.net/dashboard?retryWrites=true&w=majority";
+const url = process.env.DB_URL;
+const port = process.env.PORT;
+
 mongoose
   .connect(url, {
     useNewUrlParser: true,
@@ -36,6 +39,6 @@ mongoose
   })
   .then(() => console.log("Database Connectd"))
   .catch((err) => console.log(err, "Error connecting database"));
-app.listen(8080, () => {
+app.listen(port || 8080, () => {
   console.log("Listning to port 8080");
 });
